@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy as db
 
@@ -48,9 +48,12 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route('/create')
+@app.route('/create', methods=['POST'], ['GET'])
 def create():
-    return render_template('create.html')
+    if request.method == 'post':
+        pass
+    else:
+        return render_template('create.html')
 
 
 if __name__ == '__main__':
