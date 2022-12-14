@@ -25,11 +25,11 @@
             <div class="card-body">
               <h1 class="card-title pricing-card-title">{{ el.price }}<small class="text-muted fw-light"> руб.</small></h1>
               <ul class="list-unstyled mt-3 mb-4">
-                <li>Очэнь хорошае</li>
-                <li>Вчера хрукало</li>
-                <li>Завтра не будет</li>
+                <li>{{ el.text }}</li>
               </ul>
-              <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
+              <form method="post">
+                <a href="/{{ el.id }}/delete" class="w-100 btn btn-lg btn-outline-success">Купить</a>
+              </form>
             </div>
           </div>
         </div>

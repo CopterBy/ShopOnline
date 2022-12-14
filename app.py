@@ -5,7 +5,7 @@ import sqlalchemy as db
 app = Flask(__name__)
 
 # # Create data base
-# Defining the Engine
+# # Defining the Engine
 # engine = db.create_engine('sqlite:///shop.db', echo=True)
 #
 # # Create the Metadata Object
@@ -14,13 +14,14 @@ app = Flask(__name__)
 # # Define the profile table
 #
 # # database name
-# profile = db.Table(
-#     'profile',
+# item = db.Table(
+#     'item',
 #     metadata_obj,
 #     db.Column('id', db.Integer, primary_key=True),
 #     db.Column('title', db.String(100), nullable=False),
 #     db.Column('price', db.Integer, nullable=False),
 #     db.Column('isActive', db.Boolean, default=True),
+#     db.Column('text', db.Text, nullable=False),
 # )
 #
 # # Create the profile table
@@ -35,8 +36,7 @@ class Item(db.Model):
     title = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     isActive = db.Column(db.Boolean, default=True)
-
-    # text = db.Column(db.Text, nullable=False)
+    text = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return self.title
@@ -58,8 +58,9 @@ def create():
     if request.method == 'POST':
         title = request.form['title']
         price = request.form['price']
+        text = request.form['text']
 
-        item = Item(title=title, price=price)
+        item = Item(title=title, price=price, text=text)
 
         try:
             db.session.add(item)
@@ -69,6 +70,17 @@ def create():
             return 'Ошибка добавления товара'
     else:
         return render_template('create.html')
+
+
+@app.route('/<int:id>/delete')
+def buy(id):
+    item = Item.query.get_or_404(id)
+    try:
+        db.session.delete(item)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'Ошибка покупки товара'
 
 
 if __name__ == '__main__':
